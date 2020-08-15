@@ -3,7 +3,7 @@ from datetime import datetime
 from django.shortcuts import render
 from django.views.generic.base import View
 from .models import Category
-from .models import Post
+from .models import Post, Comment
 
 
 # class HomeView(View):
@@ -21,7 +21,7 @@ class HomeView(View):
     """Home page"""
     def get(self, request):
         category_list = Category.objects.all()
-        post_list = Post.objects.filter(published_date__lte=datetime.now() ,published = True)
+        post_list = Post.objects.filter(published_date__lte=datetime.now(), published = True)
         return render(request, "blog/post_list.html", {'categories': category_list, 'post_list': post_list})
 
     def post(self, request):
@@ -32,7 +32,8 @@ class PostDetailView(View):
     def get(self, request, category, slug):
         category_list = Category.objects.all()
         post  = Post.objects.get(slug=slug)
-        return render(request, "blog/post_detail.html", {'categories': category_list, 'post': post})
+        comments = Comment.objects.filter(post=post)
+        return render(request, post.template, {'categories': category_list, 'post': post,'comments':comments})
 
 class CategoryView(View):
     """views category of staty"""

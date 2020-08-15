@@ -64,7 +64,7 @@ class Post(models.Model):
         on_delete=models.CASCADE,
         null=True
     )
-    tags = models.ManyToManyField(Tag, verbose_name='Тег', blank=True)
+    tags = models.ManyToManyField(Tag, verbose_name='Тег', blank=True, related_name="tag")
     subtitle = models.CharField("Под заголовок", max_length=500, blank=True, null=True)
     edit_date = models.DateTimeField(
         'Дата редактирования',
@@ -93,6 +93,8 @@ class Post(models.Model):
     def get_absolute_urls(self):
         return reverse('detail_post', kwargs={'category': self.category.slug, 'slug': self.slug})
 
+    def comments_count(self):
+        return self.comments.count()
     def __str__(self):
         return self.title
 
@@ -107,7 +109,7 @@ class Comment(models.Model):
     text = models.TextField('f_text', max_length=400)
     created_date = models.DateTimeField('created_date')
     moderation = models.BooleanField('moderation')
-    post = models.ForeignKey(Post, verbose_name='Статья', on_delete=models.CASCADE)
+    post = models.ForeignKey(Post, verbose_name='Статья', on_delete=models.CASCADE, related_name="comments")
 
     # def __str__(self):
     #     return '%s (%s)' % (self.created_date,self.post.title)

@@ -5,6 +5,7 @@
     <title>Title</title>
 </head>
 <body>
+<h1>SPORT</h1>
 {% for category in categories %}
     <p><a href="{{post.get_absolute_url}}">{{ category.name }}</a></p>
 {% endfor %}
@@ -18,16 +19,12 @@
 автор
 {{post.author}} - {{post.published_date}}
 <H4>Коментарии</H4>
-{% for comment in comments%}
-    Пользователь - {{comment.author}}<br>
-    {{comment.text}}<br>
-    Дата комментария:{{comment.created_date}}
-{% endfor %}
-<!--{% for comment in post.comment_set.all%}-->
-<!--    Пользователь - -->
-<!--    {{comment.author}}-->
-<!--    {{comment.text}}-->
-<!--    {{comment.created_date}}-->
+
+{% for comment in post.comment_set.all%}
+    Пользователь -
+    {{comment.author}}
+    {{comment.text}}
+    {{comment.created_date}}
 {% endfor %}
 
 
